@@ -1,0 +1,250 @@
+=====================================
+ NMAP SCAN RESULTS
+ Task 1: Basic Network Scanning
+=====================================
+
+SCAN DETAILS
+-------------------------------------
+Scanner : Kali Linux 2025.3 (VirtualBox)
+Tool    : Nmap 7.98
+Target  : 192.168.0.4 (private lab VM)
+Target  : Metasploitable (Linux)
+Date    : 19 Nov 2026
+Scope   : Own local VM only
+
+COMMANDS RUN
+-------------------------------------
+1. Basic scan
+   nmap 192.168.0.4
+2. Service version scan
+   nmap -sV 192.168.0.4
+3. OS detection scan
+   sudo nmap -O 192.168.0.4
+
+SUMMARY
+-------------------------------------
+Host status    : UP
+Ports scanned  : 1000 (default)
+Open ports     : 22
+Filtered ports : 978
+
+OPEN PORTS (from -sV scan)
+-------------------------------------
+PORT   SERVICE      VERSION
+21     ftp          vsftpd 2.3.4
+22     ssh          OpenSSH 4.7p1
+23     telnet       Linux telnetd
+25     smtp         Postfix smtpd
+53     domain       ISC BIND 9.4.2
+111    rpcbind      RPC #100000
+139    netbios-ssn  Samba smbd 3.X-4.X
+445    netbios-ssn  Samba smbd 3.X-4.X
+512    exec         netkit-rsh rexecd
+513    login        login?
+514    shell        tcpwrapped
+1099   java-rmi     GNU Classpath
+                    grmiregistry
+1524   bindshell    Metasploitable
+                    root shell
+2049   nfs          RPC #100003
+2121   ftp          ProFTPD 1.3.1
+3306   mysql        MySQL 5.0.51a
+5432   postgresql   PostgreSQL
+                    8.3.0 - 8.3.7
+5900   vnc          VNC (protocol 3.3)
+6000   X11          access denied
+6667   irc          UnrealIRCd
+8009   ajp13        Apache Jserv 1.3
+8180   http         Apache Tomcat
+                    Coyote JSP 1.1
+
+PORT-WISE EXPLANATION AND RISK
+-------------------------------------
+Risk: LOW / MEDIUM / HIGH / CRITICAL
+
+[21] FTP (vsftpd 2.3.4)
+Does : Uploads/downloads files
+Risk : CRITICAL
+       Plain-text login. This version
+       has a known backdoor
+       (CVE-2011-2523).
+
+[22] SSH (OpenSSH 4.7p1)
+Does : Encrypted remote login
+Risk : MEDIUM
+       Secure protocol, but very old
+       version. Weak passwords can
+       be brute-forced.
+
+[23] Telnet
+Does : Old remote terminal access
+Risk : HIGH
+       No encryption, passwords
+       travel in plain text.
+       Use SSH instead.
+
+[25] SMTP (Postfix)
+Does : Sends and routes email
+Risk : MEDIUM
+       Can leak valid usernames and
+       be abused for spam relay if
+       misconfigured.
+
+[53] DNS (BIND 9.4.2)
+Does : Converts domain names to IPs
+Risk : MEDIUM-HIGH
+       Very old version with known
+       flaws. Zone transfers may
+       leak internal info.
+
+[111] rpcbind
+Does : Maps RPC services to ports
+Risk : MEDIUM
+       Reveals running RPC services
+       to attackers.
+
+[139, 445] SMB (Samba)
+Does : Windows-style file sharing
+Risk : HIGH
+       Long history of serious
+       vulnerabilities and
+       misconfigured shares.
+
+[512] rexec
+Does : Remote command execution
+Risk : HIGH
+       Legacy, unencrypted, weak
+       authentication.
+
+[513] rlogin
+Does : Remote login
+Risk : HIGH
+       Trust-based login, plain
+       text, easy to abuse.
+
+[514] rsh (tcpwrapped)
+Does : Remote shell commands
+Risk : HIGH
+       Same weaknesses as rexec
+       and rlogin.
+
+[1099] Java RMI
+Does : Remote Java object registry
+Risk : HIGH
+       Misconfigured RMI can allow
+       remote code execution.
+
+[1524] Bindshell
+Does : Nothing legitimate. A
+       backdoor shell on a port.
+Risk : CRITICAL
+       Gives root access without
+       any password.
+
+[2049] NFS
+Does : Shares folders over network
+Risk : HIGH
+       Weak export settings can
+       expose files to anyone.
+
+[2121] FTP (ProFTPD 1.3.1)
+Does : Second FTP server
+Risk : HIGH
+       Plain-text login and old
+       vulnerable version.
+
+[3306] MySQL 5.0.51a
+Does : Database server
+Risk : HIGH
+       Very old version. Should not
+       be open to the network. Weak
+       root password is common.
+
+[5432] PostgreSQL 8.3.x
+Does : Database server
+Risk : HIGH
+       Outdated, known flaws. Should
+       allow trusted hosts only.
+
+[5900] VNC
+Does : Remote desktop access
+Risk : HIGH
+       Old protocol, weak
+       authentication, easy to
+       guess passwords.
+
+[6000] X11
+Does : Linux graphical display
+Risk : MEDIUM
+       Access denied here (good).
+       If open, attackers can see
+       screen and keystrokes.
+
+[6667] IRC (UnrealIRCd)
+Does : Chat server
+Risk : CRITICAL
+       Some releases have a
+       backdoor allowing remote
+       commands (CVE-2010-2075).
+
+[8009] AJP13 (Apache Jserv)
+Does : Links web server to Tomcat
+Risk : HIGH
+       Exposed AJP can allow file
+       read or code execution
+       (Ghostcat, CVE-2020-1938).
+
+[8180] HTTP (Apache Tomcat)
+Does : Web / Java app server
+Risk : HIGH
+       Old Tomcat, default
+       credentials, unencrypted.
+
+OS DETECTION RESULT (-O)
+-------------------------------------
+Nmap guess:
+ - Oracle VirtualBox Slirp NAT (98%)
+ - AT&T BGW210 gateway (94%)
+ - QEMU user mode gateway (94%)
+
+Warning shown:
+ "OSScan results may be unreliable"
+ "No exact OS matches for host"
+
+Meaning:
+Nmap detected the VirtualBox NAT
+layer in front of the VM, not the
+real OS. It found no closed port
+(978 were filtered), so the guess
+is weak.
+
+Real target (from -sV scan):
+ Host : metasploitable.localdomain
+ OS   : Linux (Unix)
+
+KEY FINDINGS
+-------------------------------------
+- 22 open ports, many legacy and
+  insecure (telnet, rsh, FTP, VNC).
+- Many services are very old.
+- Critical: port 1524 root shell,
+  vsftpd backdoor, UnrealIRCd
+  backdoor.
+
+RECOMMENDATIONS
+-------------------------------------
+1. Disable unused services (telnet,
+   r-services, bindshell, NFS).
+2. Use encrypted protocols (SSH,
+   SFTP, HTTPS).
+3. Update all software.
+4. Use a firewall, open only needed
+   ports.
+5. Use strong passwords or keys.
+   Keep databases local only.
+
+NOTE
+-------------------------------------
+Metasploitable is intentionally
+vulnerable. For learning only.
+Never expose it to the internet.

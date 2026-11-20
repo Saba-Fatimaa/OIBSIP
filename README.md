@@ -1,6 +1,6 @@
 # OIBSIP
 
-Oasis Infobyte Internship Program (OIBSIP) - Cyber Security Track.
+Oasis Infobyte Internship Program (OIBSIP) - Security Analyst/Cyber Security Track.
 
 This repository contains my completed internship tasks. Each task has its own folder with source files, a README and screenshots.
 

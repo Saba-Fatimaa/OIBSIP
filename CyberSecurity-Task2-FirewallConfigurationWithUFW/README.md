@@ -70,7 +70,7 @@ Rules active on the VM, then firewall disabled, and the same `curl` succeeds:
 ![firewall off test](screenshots/firewall-off-test.png)
 
 ## Recording
-Screen recording of the full process: (add link here)
+Screen recording of the full process: https://lnkd.in/p/dVvbQjvz
 
 ## Cleanup
 After the task, the firewall was reset to its original state:

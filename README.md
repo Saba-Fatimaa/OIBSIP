@@ -9,7 +9,6 @@ This repository contains my completed internship tasks. Each task has its own fo
 | Task | Folder | Status |
 |------|--------|--------|
 | Task 1: Basic Network Scanning with Nmap | [CyberSecurity-Task1-NmapNetworkScanning](CyberSecurity-Task1-NmapNetworkScanning) | Completed |
-|------|--------|--------|
 | Task 2:Basic Firewall Configuration with UFW | [CyberSecurity-Task2-FirewallConfigurationWithUFW](CyberSecurity-Task2-FirewallConfigurationWithUFW) | Completed |
 
 ## Note
